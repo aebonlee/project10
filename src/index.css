@@ -73,3 +73,28 @@ p { line-height: 1.7; }
   :root { --bg: #0f1115; --card: #171a21; --border: #272b34; --soft: #21252d; --text: #e8eaed; --sub: #9aa1ad; --faint: #6b7280; --primary: #5b8cff; }
   input, textarea, select { background: #11141a; }
 }
+
+/* ── v3 공통 유틸 ── */
+.studio { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; display: flex; flex-direction: column; gap: 16px; }
+.studio-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+@media (max-width: 560px) { .studio-row { grid-template-columns: 1fr; } }
+.pipeline { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.pipeline li { display: flex; gap: 12px; align-items: flex-start; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; font-size: 14px; line-height: 1.6; }
+.pl-no { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; color: #fff; font-size: 12.5px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.learn { display: flex; flex-direction: column; gap: 10px; }
+.learn-h { font-size: 16px; margin: 6px 0 2px; }
+.result-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+.rcard { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; position: relative; }
+.rcard h4 { margin: 0 0 6px; font-size: 15.5px; }
+.rcard p { margin: 4px 0 0; font-size: 13px; color: var(--sub); line-height: 1.65; }
+.rcard .tag { display: inline-block; font-size: 11px; font-weight: 800; padding: 2px 9px; border-radius: 999px; color: #fff; margin-bottom: 4px; }
+.kv { display: flex; gap: 6px; font-size: 13px; line-height: 1.6; margin-top: 4px; }
+.kv b { flex-shrink: 0; color: var(--text); }
+.qrow { display: flex; gap: 10px; align-items: flex-start; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; font-size: 14px; line-height: 1.6; }
+.qno { flex-shrink: 0; color: #fff; font-size: 11px; font-weight: 800; border-radius: 6px; padding: 3px 7px; }
+.callout-soft { border-radius: 12px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; font-size: 14px; line-height: 1.7; }
+.chk { display: flex; gap: 10px; align-items: center; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 10px 13px; font-size: 14px; cursor: pointer; }
+.chk input { width: auto; }
+.mini-bar { height: 8px; border-radius: 999px; background: var(--soft); overflow: hidden; }
+.mini-bar > span { display: block; height: 100%; border-radius: 999px; }

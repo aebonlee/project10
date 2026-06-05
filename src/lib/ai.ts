@@ -41,3 +41,32 @@ export async function chat(messages: Msg[], opts: { temperature?: number; max_to
 /** 시스템+유저 프롬프트 간편 호출 */
 export const ask = (system: string, user: string, opts?: { temperature?: number; max_tokens?: number; json?: boolean }) =>
   chat([{ role: 'system', content: system }, { role: 'user', content: user }], opts);
+
+/**
+ * DALL·E 3 이미지 생성 — 동화 장면 삽화용.
+ * 반환: data URL(b64) 문자열. 키 없거나 실패 시 throw (호출부에서 SVG 폴백).
+ */
+export async function generateImage(prompt: string, opts: { size?: '1024x1024' | '1792x1024'; quality?: 'standard' | 'hd' } = {}): Promise<string> {
+  const key = getKey();
+  if (!key) throw new Error('NO_KEY');
+  const res = await fetch('https://api.openai.com/v1/images/generations', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
+    body: JSON.stringify({
+      model: 'dall-e-3',
+      prompt,
+      n: 1,
+      size: opts.size ?? '1024x1024',
+      quality: opts.quality ?? 'standard',
+      response_format: 'b64_json',
+    }),
+  });
+  if (!res.ok) {
+    const t = await res.text().catch(() => '');
+    throw new Error(`Image ${res.status}: ${t.slice(0, 120)}`);
+  }
+  const data = await res.json();
+  const b64 = data.data?.[0]?.b64_json;
+  if (!b64) throw new Error('NO_IMAGE');
+  return `data:image/png;base64,${b64}`;
+}

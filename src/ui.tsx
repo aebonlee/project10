@@ -19,6 +19,8 @@ export interface Meta {
   howto: string[];                                   // 사용 방법
   facts: { value: string; label: string }[];         // 도메인 통계
   info: { title: string; body: string }[];           // 도메인 지식 카드
+  pipeline?: string[];                                // AI/데이터 처리 흐름(단계)
+  techNotes?: { title: string; body: string }[];      // 기술 설계 노트
   stack: string[];                                   // 기술 스택
   links?: { label: string; url: string }[];          // 참고 링크
 }
@@ -76,11 +78,33 @@ export const InfoTab = ({ m }: { m: Meta }) => (
       </div>
     </div>
 
+    {m.pipeline && m.pipeline.length > 0 && (
+      <div>
+        <div className="seclabel" style={{ color: m.color }}>동작 원리</div>
+        <h3 className="sechead">AI 처리 파이프라인</h3>
+        <ol className="pipeline">
+          {m.pipeline.map((s, i) => (
+            <li key={i}><span className="pl-no" style={{ background: m.color }}>{i + 1}</span><span>{s}</span></li>
+          ))}
+        </ol>
+      </div>
+    )}
+
     {m.info.length > 0 && (
       <div>
         <div className="seclabel" style={{ color: m.color }}>알아두면 좋은 정보</div>
         <h3 className="sechead">도메인 가이드</h3>
         <Stack gap={10}>{m.info.map((c, i) => <div key={i} className="infocard"><h4 style={{ color: m.color }}>{c.title}</h4><p>{c.body}</p></div>)}</Stack>
+      </div>
+    )}
+
+    {m.techNotes && m.techNotes.length > 0 && (
+      <div>
+        <div className="seclabel" style={{ color: m.color }}>엔지니어링</div>
+        <h3 className="sechead">기술 설계 노트</h3>
+        <div className="feat-grid" style={{ marginTop: 12 }}>
+          {m.techNotes.map((c, i) => <div key={i} className="feat"><strong style={{ marginTop: 0 }}>🛠️ {c.title}</strong><p>{c.body}</p></div>)}
+        </div>
       </div>
     )}
 
