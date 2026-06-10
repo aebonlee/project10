@@ -47,6 +47,53 @@ const M: Meta = {
     { title: '클립보드 내보내기', body: 'navigator.clipboard로 초안을 한 번에 복사해 지원서에 바로 붙여넣게 합니다.' },
     { title: '정적·오프라인', body: '키 없이도 템플릿으로 동작하며 초안은 localStorage에 보관됩니다.' },
   ],
+  targets: ['취업·이직 준비자', '자소서 백지가 막막한 사람', '면접이 두려운 지원자'],
+  goals: [
+    '직무 맞춤 자소서 초안과 STAR 분석·피드백을 제공한다',
+    '모의 면접 질문·의도·모범답안으로 실전을 준비시킨다',
+    'API 키가 없어도 템플릿으로 동작하게 한다',
+  ],
+  scenarios: [
+    '직무·회사·경력을 입력한다',
+    '자소서 모드: 문항·핵심 경험으로 초안 생성 + STAR 분석·피드백을 받는다',
+    '면접 모드: 예상 질문·의도·모범답안·팁을 받고 초안을 저장한다',
+  ],
+  screens: [
+    { name: '맥락 입력', desc: '직무·회사·경력 단계·모드 선택' },
+    { name: '자소서 코칭', desc: '초안 + STAR 구조 분석 + 개선 피드백 + 복사' },
+    { name: '모의 면접', desc: '직무 맞춤 예상 질문·출제 의도·모범답안·팁' },
+    { name: '초안 보관', desc: '작성한 자소서를 저장·재편집' },
+  ],
+  pipelineDetail: [
+    { step: '맥락 수집', detail: '직무·회사·경력·문항·핵심 경험을 구조화한다.' },
+    { step: '생성 합성 · 스키마 강제', detail: 'STAR·직무적합성 지침을 system 프롬프트로 지시하고 모드별 JSON 스키마를 고정한다.' },
+    { step: 'GPT 호출(json_object)', detail: '자소서(초안·STAR·피드백) 또는 면접(질문·의도·모범답안)을 수신한다.' },
+    { step: '검증 · 폴백', detail: '누락 시 템플릿으로 안전 생성한다.' },
+    { step: '코칭', detail: 'STAR 분해 + 개선 피드백 / 질문별 의도·모범답안을 제시한다.' },
+    { step: '관리', detail: '초안을 localStorage(resume.drafts)에 저장하고 클립보드로 복사한다.' },
+  ],
+  promptNotes: [
+    '자소서/면접 모드에 따라 서로 다른 JSON 스키마를 강제해 일관된 결과 구조를 보장한다.',
+    '경험을 Situation/Task/Action/Result 필드로 받도록 스키마를 강제해 STAR 구조 점검을 가능하게 한다.',
+    'API 키가 없으면 템플릿으로 동일 구조의 초안·면접 자료를 제공한다.',
+  ],
+  architecture:
+    '백엔드 없는 React SPA. 공통 레이아웃·5탭은 src/ui.tsx, 코칭 기능은 src/App.tsx가 담당한다. ' +
+    'OpenAI 호출은 src/lib/ai.ts, 초안 복사는 Clipboard API로 처리하며, 작성 초안은 브라우저 localStorage에 보관한다.',
+  structure: [
+    { path: 'src/App.tsx', desc: '자소서 생성·STAR 분석·모의 면접·초안 보관 + 메타(M)' },
+    { path: 'src/ui.tsx', desc: '공통 레이아웃·5탭·UI 헬퍼' },
+    { path: 'src/lib/ai.ts', desc: 'OpenAI chat 헬퍼(모드별 스키마)' },
+    { path: 'src/index.css', desc: '테마·자소서/면접 스타일' },
+  ],
+  dataModel: [
+    { name: 'Cover', desc: '자소서 초안·STAR 분석·개선 피드백' },
+    { name: 'Star', desc: '경험의 Situation·Task·Action·Result 분해' },
+    { name: 'IQ (면접 질문)', desc: '예상 질문·출제 의도·모범답안·팁' },
+    { name: '초안 보관', desc: '작성 자소서. localStorage "resume.drafts"' },
+  ],
+  deploy:
+    'Vite 빌드(base: "./") 후 GitHub Actions(deploy.yml)가 main push 시 GitHub Pages로 자동 배포 → aebonlee.github.io/project10/',
   stack: ['React 18', 'TypeScript', 'Vite', 'OpenAI GPT', 'Clipboard API', 'localStorage'],
   links: [
     { label: '워크넷', url: 'https://www.work.go.kr' },
