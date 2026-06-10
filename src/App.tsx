@@ -94,6 +94,15 @@ const M: Meta = {
   ],
   deploy:
     'Vite 빌드(base: "./") 후 GitHub Actions(deploy.yml)가 main push 시 GitHub Pages로 자동 배포 → aebonlee.github.io/project10/',
+  scope: {
+    include: ['직무·경험 입력 → 자소서 초안·STAR 분석·피드백', '모의 면접 질문·의도·모범답안·초안 저장', 'AI 코칭 + 키 없을 때 템플릿 폴백'],
+    exclude: ['실제 채용 연동·지원', '첨삭 협업·공유', '음성 모의면접'],
+  },
+  pitch: [
+    '경험을 STAR로 구조화해 설득력을 높이는 점',
+    '질문의 "출제 의도"까지 알려줘 핵심을 겨냥하는 점',
+    '모드별 JSON 스키마로 일관된 결과',
+  ],
   stack: ['React 18', 'TypeScript', 'Vite', 'OpenAI GPT', 'Clipboard API', 'localStorage'],
   links: [
     { label: '워크넷', url: 'https://www.work.go.kr' },
